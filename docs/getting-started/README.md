@@ -28,8 +28,8 @@ All code dependencies are packaged in an Ansible Execution Environment (containe
 Clone the project to your workspace:
 
 ```bash
-git clone https://<YOUR_GIT_HOST>/<YOUR_REPO_NAME>.git
-cd <YOUR_REPO_NAME_ONLY>
+git clone https://github.com/cloudera-labs/cloudera-ce-aws.git
+cd cloudera-ce-aws
 ```
 
 ## Execution Environment
