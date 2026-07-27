@@ -1,0 +1,61 @@
+[project]
+name = "pvc-ce-ecs-aws"
+dynamic = ["version"]
+description = 'Cloudera on Premise Community Edition for AWS is an examplar deployment for development, training, workshops, and demonstrations.'
+readme = "README.md"
+requires-python = ">=3.8"
+license = "Apache-2.0"
+keywords = []
+authors = [
+  { name = "Webster Mudge", email = "wmudge@cloudera.com" },
+  { name = "Jim Enright", email = "jenright@cloudera.com" },
+  { name = "Ronald Suplina", email = "rsuplina@cloudera.com" }
+]
+classifiers = []
+dependencies = []
+
+[tool.hatch.version]
+path = "VERSION.txt"
+scheme = "semver"
+validate-bump = true
+
+[tool.hatch.envs.default]
+python = "3.12"
+detached = true
+dependencies = [
+  "pre-commit",
+  "unidecode",
+  "pytest",
+  "pytest-mock",
+  "ansible-core<2.17", # For RHEL 8 support
+  "ansible-navigator",
+  "ansible-lint",
+  "python-gnupg",
+  "cm-client",
+  "netaddr",
+  "psycopg2-binary",
+]
+
+[tool.hatch.envs.default.scripts]
+lint = [
+  "pre-commit run -a",
+  "ansible-lint --fix",
+]
+
+[tool.hatch.envs.docs]
+python = "3.12"
+detached = true
+dependencies = [
+  "zensical",
+]
+
+[tool.hatch.envs.docs.scripts]
+serve = "zensical serve"
+build = "zensical build"
+
+[build-system]
+requires = [
+  "hatchling",
+  "hatch-semver",
+]
+build-backend = "hatchling.build"
