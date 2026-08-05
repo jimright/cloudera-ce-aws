@@ -58,9 +58,9 @@ public_domain: "nip.io" # Externally routable domain for reverse proxy endpoints
 # ecs_parcel_repo_url: https://archive.cloudera.com/p/cdp-pvc-ds/{{ ecs_version }}/parcels/
 
 ### Feature toggles (see services.yml for usage)
-enable_prometheus: false
-enable_freeipa_wildcard_profile: false
-enable_postgres_tls: false
+enable_prometheus: true
+enable_freeipa_wildcard_profile: true
+enable_postgres_tls: true
 enable_prereq_freeipa_client: true
 
 ### Foundational credentials
@@ -108,8 +108,3 @@ freeipa_client_packages:
 freeipa_server_packages:
   - "ipa-server-4.12.2-14.el9_6"
   - "ipa-server-dns-4.12.2-14.el9_6"
-
-### Feature toggles
-enable_postgres_tls: true
-enable_prometheus: true
-enable_freeipa_wildcard_profile: true
