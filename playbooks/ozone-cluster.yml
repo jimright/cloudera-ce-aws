@@ -427,10 +427,13 @@
           hdfs_service: "{{ __hdfs.service.name }}"
           # ranger_service: "{{ __ranger.service.name }}"
           # zookeeper_service: "{{ __zookeeper.service.name }}"
+          yarn_service_lce_always: true
+          yarn_service_cgroups: true
         role_config_groups:
           - type: NODEMANAGER
             config:
               yarn_nodemanager_local_dirs: "{{ yarn_nodemanager_local_dirs | string }}"
+              gpu_enabled: true
           - type: GATEWAY
             config:
               mapred_submit_replication: "{{ groups['cluster'] | map('extract', hostvars) | selectattr('host_template', 'eq', 'Worker') | length }}"
@@ -795,6 +798,29 @@
         #   - service: # str
         #     type: # str
         #     config: # dict
+
+- name: Enable Cgroup Resource Management on Ozone Base cluster worker hosts
+  hosts: base_workers
+  gather_facts: false
+  module_defaults:
+    group/cloudera.cluster.deployment:
+      host: "cm.{{ groups['reverse_proxy'] | map('extract', hostvars, 'ansible_host') | first }}.{{ public_domain }}"
+      port: 80
+      username: admin
+      password: "{{ cloudera_manager_admin_password }}"
+      ssl_ca_cert: "{{ caddy_ca_pem | default(omit) }}"
+      verify_tls: "{{ (caddy_self_signed is defined and caddy_ca_pem is undefined) | ternary('no', 'yes') }}"
+  tags:
+    - cluster
+    - roles
+  tasks:
+    - name: Provision host to cluster
+      delegate_to: localhost
+      cloudera.cluster.host:
+        name: "{{ inventory_hostname }}" # str
+        cluster: ozone-base-cluster
+        config:
+          rm_enabled: true
 
 - name: Manage Ozone Base cluster state
   hosts: localhost
