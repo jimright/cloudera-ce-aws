@@ -21,5 +21,6 @@ locals {
     sdx     = module.sdx
     masters = module.base_masters
     workers = module.base_workers
+    gpu_workers = module.base_gpu_workers
   }
 }

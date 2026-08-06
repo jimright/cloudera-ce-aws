@@ -63,6 +63,10 @@ resource "ansible_group" "base_workers" {
   name = "base_workers"
 }
 
+resource "ansible_group" "base_gpu_workers" {
+  name = "base_gpu_workers"
+}
+
 resource "ansible_group" "ecs_masters" {
   name = "ecs_masters"
 }
@@ -76,6 +80,7 @@ resource "ansible_group" "base" {
   children = [
     ansible_group.base_masters.name,
     ansible_group.base_workers.name,
+    ansible_group.base_gpu_workers.name,
     ansible_group.sdx.name,
     ansible_group.knox.name,
   ]

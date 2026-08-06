@@ -143,7 +143,7 @@ module "base_workers" {
   }
 
   name            = "${var.prefix}-base-worker"
-  quantity        = 4
+  quantity        = 2
   image_id        = data.aws_ami.pvc_base.image_id
   instance_type   = "t3a.xlarge"
   ssh_key_pair    = aws_key_pair.pvc_base.key_name
@@ -170,6 +170,47 @@ resource "ansible_host" "base_workers" {
     ansible_user    = local.ami_user
     host_template   = "Worker"
     storage_volumes = jsonencode(lookup(module.base_workers.storage_volumes, each.value.id, []))
+  }
+}
+
+module "base_gpu_workers" {
+  source     = "git::https://github.com/cloudera-labs/terraform-cloudera-ce-infrastructure-aws.git//modules/hosts?ref=main"
+  depends_on = [aws_key_pair.pvc_base, data.aws_ami.pvc_base]
+
+  providers = {
+    aws                    = aws,
+    aws.pricing_calculator = aws.price_calculator
+  }
+
+  name            = "${var.prefix}-base-gpu-worker"
+  quantity        = 2
+  image_id        = data.aws_ami.pvc_base.image_id
+  instance_type   = "g5.2xlarge"
+  ssh_key_pair    = aws_key_pair.pvc_base.key_name
+  subnet_ids      = module.cluster_network.private_subnets[*].id
+  security_groups = [module.cluster_network.intra_cluster_security_group.id]
+  public_ip       = false
+
+  root_volume = {
+    volume_size = 250
+  }
+}
+
+resource "ansible_host" "base_gpu_workers" {
+  for_each = { for idx, host in module.base_gpu_workers.hosts : idx => host }
+
+  name = format("%s.%s", each.value.tags["Name"], local.vpc_private_domain)
+
+  groups = [
+    ansible_group.base_workers.name,
+    ansible_group.base_gpu_workers.name
+  ]
+
+  variables = {
+    ansible_host    = each.value.private_ip
+    ansible_user    = local.ami_user
+    host_template   = "Worker"
+    storage_volumes = jsonencode(lookup(module.base_gpu_workers.storage_volumes, each.value.id, []))
   }
 }
 
