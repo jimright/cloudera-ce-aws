@@ -33,6 +33,19 @@ common_password: ""   # Min 8 chars, must include 1 number
 owner_email: ""       # Your Cloudera email (used for resource tagging and pgAdmin login)
 ```
 
+!!! warning "name_prefix must be a valid FQDN label"
+    The `name_prefix` value is used to construct hostnames for every node in the
+    cluster, so it must comply with DNS naming rules
+    ([RFC 952](https://datatracker.ietf.org/doc/html/rfc952) /
+    [RFC 1123](https://datatracker.ietf.org/doc/html/rfc1123)):
+
+    - Only **lowercase letters**, **digits**, and **hyphens** (`-`)
+    - Must **start with a letter**
+    - Between **4 and 7 characters** (a cluster-role suffix is appended to form each hostname)
+
+    For example, `cld-test` is valid while `cld_test` is **not** (underscores
+    are not permitted in FQDNs).
+
 ## Optional Overrides
 
 All other parameters have sensible defaults defined in `group_vars/all.yml`. Override any of them in your `config.yml` as needed:
