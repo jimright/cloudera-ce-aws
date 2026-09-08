@@ -73,26 +73,6 @@
     - cloudera.exe.prereq_jdk
     - cloudera.exe.prereq_supported
 
-- name: Enable and configure hosts for ECS deployment
-  hosts: ecs
-  gather_facts: false
-  become: true
-  tags:
-    - system
-    - system_ecs
-  vars:
-    kernel_flags:
-      net.ipv4.ip_forward: 1
-      vm.swappiness: 1
-      vm.overcommit_memory: 1
-      net.ipv6.conf.all.disable_ipv6: 1
-      net.ipv6.conf.default.disable_ipv6: 1
-      net.ipv6.conf.lo.disable_ipv6: 1
-      fs.inotify.max_user_instances: 512
-  roles:
-    - cloudera.exe.prereq_ecs
-    - cloudera.exe.prereq_kernel
-
 - name: Provision Caddy reverse proxy service
   hosts: reverse_proxy
   gather_facts: true
@@ -131,6 +111,7 @@
         freeipa_domain: "freeipa.{{ ansible_host }}.{{ public_domain }}"
         pgadmin_domain: "pgadmin.{{ ansible_host }}.{{ public_domain }}"
         knox_domain: "knox.{{ ansible_host }}.{{ public_domain }}"
+        ecs_control_plane_domain: "console-cdp.apps.ecs.{{ ansible_host }}.{{ public_domain }}"
         prometheus_domain: "prometheus.{{ ansible_host }}.{{ public_domain }}"
         grafana_domain: "grafana.{{ ansible_host }}.{{ public_domain }}"
 
@@ -407,6 +388,26 @@
   roles:
     - cloudera.exe.docker
     - cloudera.exe.pgadmin
+
+- name: Enable and configure hosts for ECS deployment
+  hosts: ecs
+  gather_facts: false
+  become: true
+  tags:
+    - system
+    - system_ecs
+  vars:
+    kernel_flags:
+      net.ipv4.ip_forward: 1
+      vm.swappiness: 1
+      vm.overcommit_memory: 1
+      net.ipv6.conf.all.disable_ipv6: 1
+      net.ipv6.conf.default.disable_ipv6: 1
+      net.ipv6.conf.lo.disable_ipv6: 1
+      fs.inotify.max_user_instances: 512
+  roles:
+    - cloudera.exe.prereq_ecs
+    - cloudera.exe.prereq_kernel
 
 - name: Update DNS configuration on ECS hosts to have single nameserver
   hosts: ecs

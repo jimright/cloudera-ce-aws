@@ -646,12 +646,12 @@
               <name>gateway.servlet.async.supported</name>
               <value>true</value>
             </property>
-          knoxsso_redirect_whitelist_regex: "^https?:\\/\\/(.*pvc\\.cloudera-labs\\.com)(?::[0-9]+)?(?:\\/.*)?$"
+          knoxsso_redirect_whitelist_regex: "^https?:\\/\\/(.*\\.{{ public_domain | regex_escape }})(?::[0-9]+)?(?:\\/.*)?$"
         role_config_groups:
           - type: KNOX_GATEWAY
             config:
               gateway_master_secret: "{{ knox_password }}"
-              gateway_dispatch_whitelist: "^https?:\\/\\/(.*\\.cldr\\.internal)(?::[0-9]+)?(?:\\/.*)?$"
+              gateway_dispatch_whitelist: "^https?:\\/\\/(.*\\.{{ dns_domain | regex_escape }})(?::[0-9]+)?(?:\\/.*)?$"
               gateway_descriptor_cdp_proxy: "{{ cdp_proxy | items | map('join', '=') | join('#') }}"
               gateway_descriptor_cdp_proxy_api: "{{ cdp_proxy_api | items | map('join', '=') | join('#') }}"
       vars:

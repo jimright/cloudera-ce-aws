@@ -516,12 +516,12 @@
               <name>gateway.frontend.url</name>
               <value>https://knox.{{ groups['reverse_proxy'] | map('extract', hostvars, 'ansible_host') | first }}.{{ public_domain }}/gateway</value>
             </property>
-          knoxsso_redirect_whitelist_regex: "^https?:\\/\\/(.*pvc\\.cloudera-labs\\.com)(?::[0-9]+)?(?:\\/.*)?$"
+          knoxsso_redirect_whitelist_regex: "^https?:\\/\\/(.*\\.{{ public_domain | regex_escape }})(?::[0-9]+)?(?:\\/.*)?$"
         role_config_groups:
           - type: KNOX_GATEWAY
             config:
               gateway_master_secret: "{{ knox_password }}"
-              gateway_dispatch_whitelist: "^https?:\\/\\/(.*\\.cldr\\.internal)(?::[0-9]+)?(?:\\/.*)?$"
+              gateway_dispatch_whitelist: "^https?:\\/\\/(.*\\.{{ dns_domain | regex_escape }})(?::[0-9]+)?(?:\\/.*)?$"
         skip_redacted: true
       vars:
         knox_db_enabled: "{{ cloudera_runtime_version is version('7.3.1', 'ge', version_type='loose') }}"
