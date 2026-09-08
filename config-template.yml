@@ -20,7 +20,7 @@
 # Mandatory parameters — no defaults, must be set for every deployment
 ###
 
-name_prefix: "{{ mandatory }}" # Unique identifier for the deployment (used in resource names and tags)
+name_prefix: "{{ mandatory }}" # Unique identifier for the deployment. 4-7 chars long. Ensure the string is a valid substring of an FQDN (lowercase letters, digits, and hyphens only; must start with a letter)
 infra_region: "{{ mandatory }}" # AWS region (e.g. us-east-2, eu-west-1)
 common_password: "{{ mandatory }}" # Min 8 chars, must include 1 number. Can be replaced with explicit per-service passwords
 owner_email: "{{ mandatory }}" # Used for resource tagging and pgAdmin login
