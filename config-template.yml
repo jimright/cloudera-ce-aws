@@ -65,9 +65,9 @@ owner_email: "{{ mandatory }}" # Used for resource tagging and pgAdmin login
 
 ### Feature toggles
 #
-# enable_prometheus: false                       # Node Exporter, Prometheus, Grafana
-# enable_freeipa_wildcard_profile: false         # Wildcard cert profile in FreeIPA (ECS)
-# enable_postgres_tls: false                     # PostgreSQL TLS enrollment via FreeIPA
+# enable_prometheus: true                       # Node Exporter, Prometheus, Grafana
+# enable_freeipa_wildcard_profile: true         # Wildcard cert profile in FreeIPA (ECS)
+# enable_postgres_tls: true                     # PostgreSQL TLS enrollment via FreeIPA
 # enable_prereq_freeipa_client: true             # Include prereq_freeipa_client role
 
 ### Foundational credentials

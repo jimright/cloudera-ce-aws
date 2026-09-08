@@ -55,9 +55,9 @@ These are controlled via `config.yml` or `group_vars/all.yml`:
 
 | Variable | Default | Effect |
 |----------|---------|--------|
-| `enable_prometheus` | `false` | Deploys Node Exporter, Prometheus, and Grafana |
-| `enable_freeipa_wildcard_profile` | `false` | Creates wildcard certificate profile in FreeIPA |
-| `enable_postgres_tls` | `false` | Enrolls PostgreSQL with FreeIPA-signed TLS certs |
+| `enable_prometheus` | `true` | Deploys Node Exporter, Prometheus, and Grafana |
+| `enable_freeipa_wildcard_profile` | `true` | Creates wildcard certificate profile in FreeIPA |
+| `enable_postgres_tls` | `true` | Enrolls PostgreSQL with FreeIPA-signed TLS certs |
 | `enable_prereq_freeipa_client` | `true` | Runs prereq_freeipa_client role before enrollment |
 
 ## Reverse Proxy Endpoints
